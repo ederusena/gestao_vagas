@@ -1,4 +1,4 @@
-package br.sena.gestao_vagas.modules.candidate.entity;
+package br.sena.gestao_vagas.modules.candidate.entities;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

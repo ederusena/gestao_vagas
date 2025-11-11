@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.sena.gestao_vagas.modules.candidate.entity.CandidateEntity;
+import br.sena.gestao_vagas.modules.candidate.entities.CandidateEntity;
 import br.sena.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

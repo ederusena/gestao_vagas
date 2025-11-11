@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.sena.gestao_vagas.modules.candidate.entity.CandidateEntity;
+import br.sena.gestao_vagas.modules.candidate.entities.CandidateEntity;
 
 /**
  *

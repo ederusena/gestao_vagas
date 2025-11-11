@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.sena.gestao_vagas.exceptions.UserFoundException;
-import br.sena.gestao_vagas.modules.candidate.entity.CandidateEntity;
+import br.sena.gestao_vagas.modules.candidate.entities.CandidateEntity;
 import br.sena.gestao_vagas.modules.candidate.repository.CandidateReposity;
 
 @Service
@@ -14,7 +14,7 @@ public class CreateCandidateUseCase {
 
   public CandidateEntity execute(CandidateEntity candidate) {
     this.repository
-        .findByUsername(candidate.getUsername())
+        .findByUsername(candidate.getName())
         .ifPresent(existingCandidate -> {
           throw new UserFoundException();
         });
