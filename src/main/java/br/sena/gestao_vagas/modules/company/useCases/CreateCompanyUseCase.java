@@ -1,31 +1,32 @@
-package br.sena.gestao_vagas.modules.candidate.useCases;
+package br.sena.gestao_vagas.modules.company.useCases;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.sena.gestao_vagas.exceptions.EmailFoundException;
 import br.sena.gestao_vagas.exceptions.UserFoundException;
-import br.sena.gestao_vagas.modules.candidate.entities.CandidateEntity;
-import br.sena.gestao_vagas.modules.candidate.repository.CandidateReposity;
+import br.sena.gestao_vagas.modules.company.entities.CompanyEntity;
+import br.sena.gestao_vagas.modules.company.repositories.CompanyRepository;
 
 @Service
-public class CreateCandidateUseCase {
-  @Autowired
-  private CandidateReposity repository;
+public class CreateCompanyUseCase {
 
-  public CandidateEntity execute(CandidateEntity candidate) {
+  @Autowired
+  private CompanyRepository repository;
+
+  public CompanyEntity execute(CompanyEntity company) {
     this.repository
-        .findByUsername(candidate.getName())
+        .findByUsername(company.getName())
         .ifPresent(existingCandidate -> {
           throw new UserFoundException();
         });
 
     this.repository
-        .findByEmail(candidate.getEmail())
+        .findByEmail(company.getEmail())
         .ifPresent(existingCandidate -> {
           throw new EmailFoundException();
         });
-    return this.repository.save(candidate);
-  }
 
+    return this.repository.save(company);
+  }
 }
