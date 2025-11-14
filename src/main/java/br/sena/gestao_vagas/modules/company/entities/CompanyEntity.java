@@ -24,7 +24,7 @@ public class CompanyEntity {
   @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "ID gerado automaticamente")
   private UUID id;
 
-  @Pattern(regexp = "\\\\S+", message = "Username cannot be blank")
+  @Pattern(regexp = "\\S+", message = "Username cannot be blank")
   @Schema(example = "Empresa LDTA", description = "Username (sem espaços)")
   private String username;
 

@@ -31,7 +31,7 @@ public class CandidateEntity {
   @Schema(example = "joao@email.com", description = "E-mail do candidato")
   private String email;
 
-  @Pattern(regexp = "\\\\S+", message = "Username cannot be blank")
+  @Pattern(regexp = "\\S+", message = "Username cannot be blank")
   @Schema(example = "joaosilva", description = "Username (sem espaços)")
   private String username;
 
