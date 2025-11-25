@@ -20,7 +20,7 @@ public class CreateCompanyUseCase {
 
   public CompanyEntity execute(CompanyEntity company) {
     this.repository
-        .findByUsername(company.getName())
+        .findByUsername(company.getUsername())
         .ifPresent(existingCandidate -> {
           throw new UserFoundException();
         });

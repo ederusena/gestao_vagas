@@ -1,6 +1,7 @@
 package br.sena.gestao_vagas.modules.candidate.useCases;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.sena.gestao_vagas.exceptions.EmailFoundException;
@@ -13,9 +14,12 @@ public class CreateCandidateUseCase {
   @Autowired
   private CandidateReposity repository;
 
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
   public CandidateEntity execute(CandidateEntity candidate) {
     this.repository
-        .findByUsername(candidate.getName())
+        .findByUsername(candidate.getUsername())
         .ifPresent(existingCandidate -> {
           throw new UserFoundException();
         });
@@ -25,6 +29,10 @@ public class CreateCandidateUseCase {
         .ifPresent(existingCandidate -> {
           throw new EmailFoundException();
         });
+
+    var password = passwordEncoder.encode(candidate.getPassword());
+    candidate.setPassword(password);
+
     return this.repository.save(candidate);
   }
 

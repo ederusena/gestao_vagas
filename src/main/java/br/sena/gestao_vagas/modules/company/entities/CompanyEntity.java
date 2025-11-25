@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,14 +26,17 @@ public class CompanyEntity {
   private UUID id;
 
   @Pattern(regexp = "\\S+", message = "Username cannot be blank")
+  @Column(unique = true)
   @Schema(example = "Empresa LDTA", description = "Username (sem espaços)")
   private String username;
 
   @Email(message = "Invalid email format")
+  @Column(unique = true)
   @Schema(example = "empresa@email.com", description = "E-mail da empresa")
   private String email;
 
   @Length(min = 6, max = 30, message = "Password must be at least 6 characters long")
+  @Column(length = 100)
   @Schema(example = "senha123", minLength = 6, maxLength = 30, description = "Senha (mínimo 6 caracteres)")
   private String password;
 
