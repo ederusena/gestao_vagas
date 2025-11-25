@@ -30,7 +30,7 @@ public class AuthCompanyUseCase {
     var company = this.repository
         .findByUsername(authCompanyDTO.getUsername())
         .orElseThrow(() -> {
-          throw new UsernameNotFoundException("Empresa não encontrada!");
+          throw new UsernameNotFoundException("Username/password inválidos!");
         });
 
     // Verificar a senha aqui (a implementação depende de como as senhas são armazenadas e verificadas)
