@@ -22,7 +22,7 @@ public class JobController {
   private CreateJobUseCase createJobUseCase;
 
   @PostMapping("/")
-  @Operation(summary = "Create a new company")
+  @Operation(summary = "Create a new Job")
   public ResponseEntity<Object> create(@Valid @RequestBody JobEntity job) {
     try {
       var result = this.createJobUseCase.execute(job);

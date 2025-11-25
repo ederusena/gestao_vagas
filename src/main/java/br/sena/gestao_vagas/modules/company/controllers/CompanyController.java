@@ -28,6 +28,7 @@ public class CompanyController {
       var result = this.createCompanyUseCase.execute(company);
       return ResponseEntity.ok().body(result);
     } catch (Exception e) {
+      e.printStackTrace();
       return ResponseEntity.badRequest().body(e.getMessage());
     }
   }

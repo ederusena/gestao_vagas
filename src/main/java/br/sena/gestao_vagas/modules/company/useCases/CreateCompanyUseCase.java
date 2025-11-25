@@ -31,6 +31,10 @@ public class CreateCompanyUseCase {
           throw new EmailFoundException();
         });
 
+    if (company.getPassword() == null || company.getPassword().length() < 6) {
+      throw new IllegalArgumentException("Password must be at least 6 characters long");
+    }
+
     var password = passwordEncoder.encode(company.getPassword());
     company.setPassword(password);
 

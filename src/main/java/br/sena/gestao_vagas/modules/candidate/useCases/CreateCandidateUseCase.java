@@ -30,6 +30,10 @@ public class CreateCandidateUseCase {
           throw new EmailFoundException();
         });
 
+    if (candidate.getPassword() == null || candidate.getPassword().length() < 6) {
+      throw new IllegalArgumentException("Password must be at least 6 characters long");
+    }
+
     var password = passwordEncoder.encode(candidate.getPassword());
     candidate.setPassword(password);
 

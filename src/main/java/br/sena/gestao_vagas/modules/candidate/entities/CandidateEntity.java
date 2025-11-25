@@ -38,9 +38,8 @@ public class CandidateEntity {
   @Schema(example = "joaosilva", description = "Username (sem espaços)")
   private String username;
 
-  @Length(min = 6, max = 30, message = "Password must be at least 6 characters long")
   @Column(length = 100)
-  @Schema(example = "senha123", minLength = 6, maxLength = 30, description = "Senha (mínimo 6 caracteres)")
+  @Schema(example = "senha123", description = "Senha")
   private String password;
 
   @Schema(example = "Desenvolvedor Java com 5 anos de experiência", description = "Descrição profissional")

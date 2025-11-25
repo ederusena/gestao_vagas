@@ -10,16 +10,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.sena.gestao_vagas.modules.company.dto.AuthCompanyDTO;
 import br.sena.gestao_vagas.modules.company.useCases.AuthCompanyUseCase;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Authentication Company")
 public class AuthCompanyController {
 
   @Autowired
   private AuthCompanyUseCase authCompanyUseCase;
 
   @PostMapping("/company")
+  @Operation(summary = "Authenticate a Company and generate JWT token")
   public String create(@RequestBody AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
       return this.authCompanyUseCase.execute(authCompanyDTO);
   }

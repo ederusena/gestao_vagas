@@ -35,9 +35,8 @@ public class CompanyEntity {
   @Schema(example = "empresa@email.com", description = "E-mail da empresa")
   private String email;
 
-  @Length(min = 6, max = 30, message = "Password must be at least 6 characters long")
   @Column(length = 100)
-  @Schema(example = "senha123", minLength = 6, maxLength = 30, description = "Senha (mínimo 6 caracteres)")
+  @Schema(example = "senha123", description = "Senha")
   private String password;
 
   @Schema(example = "Empresa LTDA", description = "Nome da Empresa")
