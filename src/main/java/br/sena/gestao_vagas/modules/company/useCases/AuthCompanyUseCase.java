@@ -1,5 +1,8 @@
 package br.sena.gestao_vagas.modules.company.useCases;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import javax.naming.AuthenticationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +16,10 @@ import com.auth0.jwt.algorithms.Algorithm;
 
 import br.sena.gestao_vagas.modules.company.dto.AuthCompanyDTO;
 import br.sena.gestao_vagas.modules.company.repositories.CompanyRepository;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class AuthCompanyUseCase {
   
   @Value("${security.token.secret}")
@@ -27,14 +32,16 @@ public class AuthCompanyUseCase {
   private PasswordEncoder passwordEncoder;
   
   public String execute(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
+    log.info("authCompanyDTO found: {}", authCompanyDTO.toString());
     var company = this.repository
         .findByUsername(authCompanyDTO.getUsername())
         .orElseThrow(() -> {
           throw new UsernameNotFoundException("Username/password inválidos!");
         });
-
+    log.info("Company found: {}", company.getUsername());
     // Verificar a senha aqui (a implementação depende de como as senhas são armazenadas e verificadas)
     var passwordMatches = this.passwordEncoder.matches(authCompanyDTO.getPassword(), company.getPassword());
+    log.info("Password matches: {}", passwordMatches);
     // senao for igual -> .erro
     if (!passwordMatches) {
       throw new AuthenticationException("Senha inválida!");
@@ -43,7 +50,8 @@ public class AuthCompanyUseCase {
     // Se for igual -> autenticar gerar token JWT
     Algorithm algorithm = Algorithm.HMAC256(secretKey);
     return JWT.create().withIssuer("javagas")
-    .withSubject(company.getId().toString())
-    .sign(algorithm);
+      .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
+      .withSubject(company.getId().toString())
+      .sign(algorithm);
   }
 }
