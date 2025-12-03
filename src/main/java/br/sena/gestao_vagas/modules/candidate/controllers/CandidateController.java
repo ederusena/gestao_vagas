@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/candidates")
+@RequestMapping("/candidate")
 @Tag(name = "Candidate Management System")
 public class CandidateController {
 

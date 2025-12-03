@@ -1,4 +1,4 @@
-package br.sena.gestao_vagas.modules.company.controllers;
+package br.sena.gestao_vagas.modules.candidate.controllers;
 
 import javax.naming.AuthenticationException;
 
@@ -10,25 +10,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.sena.gestao_vagas.modules.company.dto.AuthCompanyDTO;
-import br.sena.gestao_vagas.modules.company.useCases.AuthCompanyUseCase;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import br.sena.gestao_vagas.modules.candidate.dto.AuthRequestCandidateDTO;
+import br.sena.gestao_vagas.modules.candidate.useCases.AuthCandidateUseCase;
 
 
 @RestController
-@RequestMapping("/company")
-@Tag(name = "Authentication Company")
-public class AuthCompanyController {
-
+@RequestMapping("/candidate")
+public class AuthCandidateController {
+  
   @Autowired
-  private AuthCompanyUseCase authCompanyUseCase;
+  private AuthCandidateUseCase authCandidateUseCase;
 
   @PostMapping("/auth")
-  @Operation(summary = "Authenticate a Company and generate JWT token")
-  public ResponseEntity<Object> create(@RequestBody AuthCompanyDTO authCompanyDTO) {
-    try {
-      var token = this.authCompanyUseCase.execute(authCompanyDTO);
+  public ResponseEntity<Object> create(@RequestBody AuthRequestCandidateDTO candidateDTO) {
+      try {
+      var token = this.authCandidateUseCase.execute(candidateDTO);
       return ResponseEntity.ok().body(token);
     } catch (AuthenticationException e) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
@@ -36,5 +32,4 @@ public class AuthCompanyController {
       return ResponseEntity.badRequest().body(e.getMessage());
     }
   }
-  
 }
