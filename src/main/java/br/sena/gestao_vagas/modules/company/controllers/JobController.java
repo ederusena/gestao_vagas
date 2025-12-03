@@ -1,5 +1,7 @@
 package br.sena.gestao_vagas.modules.company.controllers;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +13,7 @@ import br.sena.gestao_vagas.modules.company.entities.JobEntity;
 import br.sena.gestao_vagas.modules.company.useCases.CreateJobUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -23,8 +26,11 @@ public class JobController {
 
   @PostMapping("/")
   @Operation(summary = "Create a new Job")
-  public ResponseEntity<Object> create(@Valid @RequestBody JobEntity job) {
+  public ResponseEntity<Object> create(@Valid @RequestBody JobEntity job, HttpServletRequest request) {
     try {
+      var companyId = request.getAttribute("company_id");
+      job.setCompanyId(UUID.fromString(companyId.toString()));
+      
       var result = this.createJobUseCase.execute(job);
       return ResponseEntity.ok().body(result);
     } catch (Exception e) {
