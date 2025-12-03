@@ -31,7 +31,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     if (header != null && header.startsWith("Bearer ")) {
       var subjectToken = jwtProvider.validateToken(header);
 
-      if (!subjectToken.isEmpty()) {
+      if (subjectToken.isEmpty()) {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return;
       }
@@ -44,7 +44,6 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
 
     filterChain.doFilter(request, response);
-    throw new UnsupportedOperationException("Not supported yet.");
   }
 
 }

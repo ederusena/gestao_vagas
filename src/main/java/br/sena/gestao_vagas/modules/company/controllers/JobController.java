@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.sena.gestao_vagas.modules.company.dto.CreateJobDTO;
 import br.sena.gestao_vagas.modules.company.entities.JobEntity;
 import br.sena.gestao_vagas.modules.company.useCases.CreateJobUseCase;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,11 +27,15 @@ public class JobController {
 
   @PostMapping("/")
   @Operation(summary = "Create a new Job")
-  public ResponseEntity<Object> create(@Valid @RequestBody JobEntity job, HttpServletRequest request) {
+  public ResponseEntity<Object> create(@Valid @RequestBody CreateJobDTO createJobDTO, HttpServletRequest request) {
     try {
-      var companyId = request.getAttribute("company_id");
-      job.setCompanyId(UUID.fromString(companyId.toString()));
-      
+      JobEntity job = JobEntity.builder()
+          .benefits(createJobDTO.getBenefits())
+          .description(createJobDTO.getDescription())
+          .level(createJobDTO.getLevel())
+          .companyId(UUID.fromString(request.getAttribute("company_id").toString()))
+          .build();
+
       var result = this.createJobUseCase.execute(job);
       return ResponseEntity.ok().body(result);
     } catch (Exception e) {
