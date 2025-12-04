@@ -17,7 +17,7 @@ public class SecurityConfig {
 
   @Autowired
   private SecurityCandidateFilter candidateFilter;
-  
+
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
@@ -29,8 +29,8 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-resources/**").permitAll();
                 auth.anyRequest().authenticated();
             })
-            .addFilterBefore(filter, BasicAuthenticationFilter.class)
-            .addFilterBefore(candidateFilter, BasicAuthenticationFilter.class);
+            .addFilterBefore(candidateFilter, BasicAuthenticationFilter.class)
+            .addFilterBefore(filter, BasicAuthenticationFilter.class);
     return http.build();
   }
 
