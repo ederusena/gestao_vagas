@@ -31,21 +31,21 @@ public class SecurityCandidateFilter extends OncePerRequestFilter {
       var header = request.getHeader("Authorization");
 
       if (header != null && header.startsWith("Bearer ")) {
-        var token = this.jwtCandidateProvider.validateToken(header);
+        var candidateToken = this.jwtCandidateProvider.validateToken(header);
 
-        if (token == null) {
+        if (candidateToken == null) {
           response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
           return;
         }
 
-        request.setAttribute("candidate_id", token.getSubject());
-        var roles = token.getClaim("roles").asList(String.class);
+        request.setAttribute("candidate_id", candidateToken.getSubject());
+        var roles = candidateToken.getClaim("roles").asList(String.class);
         var grants = roles.stream()
             .map(
                 role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
             .toList();
 
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(token.getSubject(),
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(candidateToken.getSubject(),
             null,
             grants);
 

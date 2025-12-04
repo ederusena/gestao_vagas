@@ -1,10 +1,10 @@
 package br.sena.gestao_vagas.security;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -30,16 +30,24 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     if (request.getRequestURI().startsWith("/company")) {
       if (header != null && header.startsWith("Bearer ")) {
-        var subjectToken = jwtProvider.validateToken(header);
+        var companyToken = this.jwtProvider.validateToken(header);
 
-        if (subjectToken.isEmpty()) {
+        if (companyToken == null) {
           response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
           return;
         }
 
-        request.setAttribute("company_id", subjectToken);
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(subjectToken, null,
-            Collections.emptyList());
+        request.setAttribute("company_id", companyToken.getSubject());
+
+        var companyRoles = companyToken.getClaim("roles").asList(String.class);
+
+        var companyGrants = companyRoles.stream()
+            .map(
+                role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
+            .toList();
+
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(companyToken.getSubject(), null,
+            companyGrants);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
