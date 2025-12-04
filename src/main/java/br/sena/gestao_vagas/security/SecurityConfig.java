@@ -21,18 +21,20 @@ public class SecurityConfig {
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> {
-                auth.requestMatchers("/candidate/").permitAll()
-                        .requestMatchers("/company/").permitAll()
-                        .requestMatchers("/swagger-ui.html").permitAll()
-                        .requestMatchers("/swagger-ui/**").permitAll()
-                        .requestMatchers("/v3/api-docs/**").permitAll()
-                        .requestMatchers("/swagger-resources/**").permitAll()
-                        .requestMatchers("/webjars/**").permitAll();
-                auth.anyRequest().authenticated();
-            })
-            .addFilterBefore(candidateFilter, BasicAuthenticationFilter.class)
-            .addFilterBefore(filter, BasicAuthenticationFilter.class);
+        .authorizeHttpRequests(auth -> {
+          auth.requestMatchers("/candidate/").permitAll()
+              .requestMatchers("/candidate/auth").permitAll()
+              .requestMatchers("/company/").permitAll()
+              .requestMatchers("/company/auth").permitAll()
+              .requestMatchers("/swagger-ui.html").permitAll()
+              .requestMatchers("/swagger-ui/**").permitAll()
+              .requestMatchers("/v3/api-docs/**").permitAll()
+              .requestMatchers("/swagger-resources/**").permitAll()
+              .requestMatchers("/webjars/**").permitAll();
+          auth.anyRequest().authenticated();
+        })
+        .addFilterBefore(candidateFilter, BasicAuthenticationFilter.class)
+        .addFilterBefore(filter, BasicAuthenticationFilter.class);
     return http.build();
   }
 
