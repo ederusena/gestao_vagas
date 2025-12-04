@@ -24,9 +24,9 @@ public class SecurityCandidateFilter extends OncePerRequestFilter {
       throws ServletException, IOException {
 
     SecurityContextHolder.getContext().setAuthentication(null);
-    var header = request.getHeader("Authorization");
 
     if (request.getRequestURI().startsWith("/candidate")) {
+      var header = request.getHeader("Authorization");
 
       if (header != null && header.startsWith("Bearer ")) {
         var token = this.jwtCandidateProvider.validateToken(header);
@@ -38,10 +38,9 @@ public class SecurityCandidateFilter extends OncePerRequestFilter {
 
         request.setAttribute("candidate_id", token.getSubject());
       }
-
-      filterChain.doFilter(request, response);
     }
 
+    filterChain.doFilter(request, response);
   }
 
 }
