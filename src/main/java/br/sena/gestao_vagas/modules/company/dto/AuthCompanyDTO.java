@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AuthCompanyDTO {
-  @Schema(example = "zenkaipower", description = "Nome de usuário da empresa")
+  @Schema(example = "zenkaipower", description = "Nome de usuário da empresa", requiredMode = Schema.RequiredMode.REQUIRED)
   private String username;
-  @Schema(example = "senha123", description = "Senha da empresa")
+  @Schema(example = "senha123", description = "Senha da empresa", requiredMode = Schema.RequiredMode.REQUIRED)
   private String password;
 }

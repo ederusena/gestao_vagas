@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthRequestCandidateDTO{
+public class AuthRequestCandidateDTO {
 
-  @Schema(example = "ederusena", description = "Nome de usuário do candidato")
+  @Schema(example = "ederusena", description = "Nome de usuário do candidato", requiredMode = Schema.RequiredMode.REQUIRED)
   String username;
-  @Schema(example = "senha123", description = "Senha do candidato")
+  @Schema(example = "senha123", description = "Senha do candidato", requiredMode = Schema.RequiredMode.REQUIRED)
   String password;
-  
+
 }
