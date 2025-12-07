@@ -20,6 +20,18 @@ public class SecurityConfig {
   @Autowired
   private SecurityCandidateFilter candidateFilter;
 
+  private static final String[] SWAGGER_WHITELIST = {
+      "/v2/api-docs",
+      "/swagger-resources",
+      "/swagger-resources/**",
+      "/configuration/ui",
+      "/configuration/security",
+      "/swagger-ui.html",
+      "/webjars/**",
+      "/v3/api-docs/**",
+      "/swagger-ui/**"
+  };
+
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
@@ -28,11 +40,7 @@ public class SecurityConfig {
               .requestMatchers("/candidate/auth").permitAll()
               .requestMatchers("/company/").permitAll()
               .requestMatchers("/company/auth").permitAll()
-              .requestMatchers("/swagger-ui.html").permitAll()
-              .requestMatchers("/swagger-ui/**").permitAll()
-              .requestMatchers("/v3/api-docs/**").permitAll()
-              .requestMatchers("/swagger-resources/**").permitAll()
-              .requestMatchers("/webjars/**").permitAll();
+              .requestMatchers(SWAGGER_WHITELIST).permitAll();
           auth.anyRequest().authenticated();
         })
         .addFilterBefore(candidateFilter, BasicAuthenticationFilter.class)

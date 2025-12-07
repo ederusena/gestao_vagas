@@ -1,5 +1,6 @@
 package br.sena.gestao_vagas.modules.candidate.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.sena.gestao_vagas.modules.candidate.entities.CandidateEntity;
+import br.sena.gestao_vagas.modules.candidate.useCases.AllJobsByFilterUseCase;
 import br.sena.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
 import br.sena.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
+import br.sena.gestao_vagas.modules.company.entities.JobEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,6 +32,9 @@ public class CandidateController {
 
   @Autowired
   private ProfileCandidateUseCase profileCandidateUseCase;
+
+  @Autowired
+  private AllJobsByFilterUseCase allJobsByFilterUseCase;
 
   @PostMapping("/")
   @Operation(summary = "Create a new candidate")
@@ -50,6 +56,17 @@ public class CandidateController {
       return ResponseEntity.ok().body(candidateProfile);
     } catch (Exception e) {
       return ResponseEntity.badRequest().body(e.getMessage());
+    }
+  }
+
+  @GetMapping("/jobs")
+  @Operation(summary = "Get all jobs by filter")
+  @PreAuthorize("hasHole('CANDIDATE')")
+  public List<JobEntity> getAllJobsByFilter(String filter) {
+    try {
+      return this.allJobsByFilterUseCase.execute(filter);
+    } catch (Exception e) {
+      return null;
     }
 
   }
