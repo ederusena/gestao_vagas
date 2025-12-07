@@ -18,6 +18,11 @@ import br.sena.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
 import br.sena.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
 import br.sena.gestao_vagas.modules.company.entities.JobEntity;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -62,6 +67,12 @@ public class CandidateController {
   @GetMapping("/jobs")
   @Operation(summary = "Get all jobs by filter")
   @PreAuthorize("hasHole('CANDIDATE')")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Successfully retrieved list", content = {
+          @Content(array = @ArraySchema(schema = @Schema(implementation = JobEntity.class)))
+      }),
+      @ApiResponse(responseCode = "400", description = "Bad request")
+  })
   public List<JobEntity> getAllJobsByFilter(String filter) {
     try {
       return this.allJobsByFilterUseCase.execute(filter);
