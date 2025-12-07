@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import br.sena.gestao_vagas.modules.company.entities.CompanyEntity;
 import br.sena.gestao_vagas.modules.company.useCases.CreateCompanyUseCase;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -23,6 +27,12 @@ public class CompanyController {
 
   @PostMapping("/")
   @Operation(summary = "Create a new company")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Company created successfully", content = {
+          @Content(schema = @Schema(implementation = CompanyEntity.class))
+      }),
+      @ApiResponse(responseCode = "400", description = "Bad request")
+  })
   public ResponseEntity<Object> create(@Valid @RequestBody CompanyEntity company) {
     try {
       var result = this.createCompanyUseCase.execute(company);

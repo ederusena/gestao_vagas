@@ -14,6 +14,10 @@ import br.sena.gestao_vagas.modules.company.dto.CreateJobDTO;
 import br.sena.gestao_vagas.modules.company.entities.JobEntity;
 import br.sena.gestao_vagas.modules.company.useCases.CreateJobUseCase;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -29,6 +33,12 @@ public class JobController {
   @PostMapping("/job")
   @PreAuthorize("hasRole('COMPANY')")
   @Operation(summary = "Create a new Job")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Job created with success!", content = {
+          @Content(schema = @Schema(implementation = JobEntity.class))
+      }),
+      @ApiResponse(responseCode = "400", description = "Bad request")
+  })
   public ResponseEntity<Object> create(@Valid @RequestBody CreateJobDTO createJobDTO, HttpServletRequest request) {
     try {
       JobEntity job = JobEntity.builder()

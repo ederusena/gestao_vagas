@@ -1,5 +1,6 @@
 package br.sena.gestao_vagas.modules.candidate.controllers;
 
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,11 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.sena.gestao_vagas.modules.candidate.dto.ProfileCandidateResponseDTO;
 import br.sena.gestao_vagas.modules.candidate.entities.CandidateEntity;
 import br.sena.gestao_vagas.modules.candidate.useCases.AllJobsByFilterUseCase;
 import br.sena.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
 import br.sena.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
-import br.sena.gestao_vagas.modules.company.entities.JobEntity;
+import br.sena.gestao_vagas.modules.company.dto.JobResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -43,6 +45,12 @@ public class CandidateController {
 
   @PostMapping("/")
   @Operation(summary = "Create a new candidate")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Candidate created with success!", content = {
+          @Content(schema = @Schema(implementation = CandidateEntity.class))
+      }),
+      @ApiResponse(responseCode = "400", description = "Bad request")
+  })
   public ResponseEntity<Object> create(@Valid @RequestBody CandidateEntity candidate) {
     try {
       var result = this.createCandidateUseCase.execute(candidate);
@@ -53,7 +61,14 @@ public class CandidateController {
   }
 
   @GetMapping("/")
-  @PreAuthorize("hasHole('CANDIDATE')")
+  @PreAuthorize("hasRole('CANDIDATE')")
+  @Operation(summary = "Get candidate profile")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Successfully retrieved profile", content = {
+          @Content(schema = @Schema(implementation = ProfileCandidateResponseDTO.class))
+      }),
+      @ApiResponse(responseCode = "400", description = "Bad request")
+  })
   public ResponseEntity<Object> getProfile(HttpServletRequest request) {
     try {
       var idCandidate = (String) request.getAttribute("candidate_id");
@@ -66,14 +81,16 @@ public class CandidateController {
 
   @GetMapping("/jobs")
   @Operation(summary = "Get all jobs by filter")
-  @PreAuthorize("hasHole('CANDIDATE')")
+  @PreAuthorize("hasRole('CANDIDATE')")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Successfully retrieved list", content = {
-          @Content(array = @ArraySchema(schema = @Schema(implementation = JobEntity.class)))
+          @Content(array = @ArraySchema(schema = @Schema(implementation = JobResponseDTO.class)))
       }),
-      @ApiResponse(responseCode = "400", description = "Bad request")
+      @ApiResponse(responseCode = "400", description = "Bad request",content= {
+          @Content(array = @ArraySchema(schema = @Schema(implementation = Array.class)))
+      })
   })
-  public List<JobEntity> getAllJobsByFilter(String filter) {
+  public List<JobResponseDTO> getAllJobsByFilter(String filter) {
     try {
       return this.allJobsByFilterUseCase.execute(filter);
     } catch (Exception e) {

@@ -35,15 +35,15 @@ public class AuthCandidateUseCase {
 
   public AuthResponseCandidateDTO execute(AuthRequestCandidateDTO authRequest) throws AuthenticationException {
     var candidate = repository
-        .findByUsername(authRequest.username())
+        .findByUsername(authRequest.getUsername())
         .orElseThrow(() -> {
-          log.error("Candidate not found with username: {}", authRequest.username());
+          log.error("Candidate not found with username: {}", authRequest.getUsername());
           throw new UsernameNotFoundException("Username/password inválidos!");
         });
-    var passwordMatches = this.passwordEncoder.matches(authRequest.password(), candidate.getPassword());
+    var passwordMatches = this.passwordEncoder.matches(authRequest.getPassword(), candidate.getPassword());
 
     if (!passwordMatches) {
-      log.error("Invalid password for username: {}", authRequest.username());
+      log.error("Invalid password for username: {}", authRequest.getUsername());
       throw new AuthenticationException("Username/password inválidos!");
     }
 
