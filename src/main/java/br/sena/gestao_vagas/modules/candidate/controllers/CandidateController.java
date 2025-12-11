@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.sena.gestao_vagas.modules.candidate.dto.ProfileCandidateResponseDTO;
 import br.sena.gestao_vagas.modules.candidate.entities.CandidateEntity;
 import br.sena.gestao_vagas.modules.candidate.useCases.AllJobsByFilterUseCase;
+import br.sena.gestao_vagas.modules.candidate.useCases.ApplyJobCandidateUseCase;
 import br.sena.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
 import br.sena.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
 import br.sena.gestao_vagas.modules.company.dto.JobResponseDTO;
@@ -42,6 +43,9 @@ public class CandidateController {
 
   @Autowired
   private AllJobsByFilterUseCase allJobsByFilterUseCase;
+
+  @Autowired
+  private ApplyJobCandidateUseCase applyJobCandidateUseCase;
 
   @PostMapping("/")
   @Operation(summary = "Create a new candidate")
@@ -97,6 +101,28 @@ public class CandidateController {
       return null;
     }
 
+  }
+
+  @PostMapping("/job/apply")
+  @PreAuthorize("hasRole('CANDIDATE')")
+  @Operation(summary = "Apply for a job")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Successfully applied for the job", content = {
+          @Content(schema = @Schema(implementation = Object.class))
+      }),
+      @ApiResponse(responseCode = "400", description = "Bad request")
+  })
+  public ResponseEntity<Object> applyJob(HttpServletRequest request, @RequestBody UUID jobId) {
+    
+    try {
+      var idCandidate = (String) request.getAttribute("candidate_id");
+      var result = this.applyJobCandidateUseCase.execute(
+          UUID.fromString(idCandidate),
+          jobId);
+      return ResponseEntity.ok().body(result);
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
   }
 
 }

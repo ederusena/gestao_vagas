@@ -18,6 +18,7 @@ public class AllJobsByFilterUseCase {
   public List<JobResponseDTO> execute(String filter) {
     List<JobEntity> jobs = this.jobRepository.findByDescriptionContainingIgnoreCase(filter);
     var jobsDTO = jobs.stream().map(job -> JobResponseDTO.builder()
+        .id(job.getId().toString())
         .description(job.getDescription())
         .benefits(job.getBenefits())
         .level(job.getLevel())

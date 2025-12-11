@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobResponseDTO {
+  @Schema(example = "1", description = "ID da Vaga")
+  private String id;
   @Schema(example = "Vaga Java Fullstack Junior", description = "Descrição Vaga")
   private String description;
   @Schema(example = "Beneficios da vaga", description = "Benefícios da vaga")
