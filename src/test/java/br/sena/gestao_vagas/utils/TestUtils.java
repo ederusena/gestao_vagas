@@ -23,12 +23,12 @@ public class TestUtils {
 
   public static String generateToken(UUID idCompany, String secret) {
     var expires_in = Instant.now().plus(Duration.ofHours(2));
-  Algorithm algorithm = Algorithm.HMAC256(secret);
+    Algorithm algorithm = Algorithm.HMAC256(secret);
     var token = JWT.create().withIssuer("javagas")
-      .withExpiresAt(expires_in)
-      .withSubject(idCompany.toString())
-      .withClaim("roles", Arrays.asList("COMPANY"))
-      .sign(algorithm);
+        .withExpiresAt(expires_in)
+        .withSubject(idCompany.toString())
+        .withClaim("roles", Arrays.asList("COMPANY"))
+        .sign(algorithm);
     return token;
   }
 }
