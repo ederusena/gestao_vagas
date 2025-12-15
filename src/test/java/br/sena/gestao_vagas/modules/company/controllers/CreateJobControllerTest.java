@@ -1,5 +1,8 @@
 package br.sena.gestao_vagas.modules.company.controllers;
 
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import br.sena.gestao_vagas.exceptions.CompanyNotFoundException;
 import br.sena.gestao_vagas.modules.company.dto.CreateJobDTO;
 import br.sena.gestao_vagas.modules.company.entities.CompanyEntity;
 import br.sena.gestao_vagas.modules.company.repositories.CompanyRepository;
@@ -35,7 +39,6 @@ public class CreateJobControllerTest {
 
   @Before
   public void setup() {
-    // Setup MockMvc instance
     mvc = MockMvcBuilders
         .webAppContextSetup(context)
         .apply(SecurityMockMvcConfigurers.springSecurity())
@@ -55,7 +58,6 @@ public class CreateJobControllerTest {
 
     company = companyRepository.saveAndFlush(company);
 
-    // Test implementation goes here
     var createJobDTO = CreateJobDTO.builder()
         .description("DESCRIPTION TEST")
         .benefits("BENEFITS TEST")
@@ -67,5 +69,24 @@ public class CreateJobControllerTest {
         .content(TestUtils.asJsonString(createJobDTO))
         .header("Authorization", "Bearer " + TestUtils.generateToken(company.getId(), "JAVAGAS_@123#")))
         .andExpect(MockMvcResultMatchers.status().isOk());
+  }
+
+  @Test
+  public void should_not_be_able_to_create_a_new_job_if_company_not_found() throws Exception {
+    var createJobDTO = CreateJobDTO.builder()
+        .description("DESCRIPTION TEST")
+        .benefits("BENEFITS TEST")
+        .level("LEVEL_TEST")
+        .build();
+
+    try {
+      mvc.perform(MockMvcRequestBuilders.post("/company/job")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(TestUtils.asJsonString(createJobDTO))
+          .header("Authorization", "Bearer " + TestUtils.generateToken(UUID.randomUUID(), "JAVAGAS_@123#")))
+          .andExpect(MockMvcResultMatchers.status().isNotFound());
+    } catch (Exception e) {
+      assertThat(e).isInstanceOf(CompanyNotFoundException.class);
+    }
   }
 }

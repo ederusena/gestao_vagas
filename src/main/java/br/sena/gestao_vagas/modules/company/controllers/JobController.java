@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.sena.gestao_vagas.exceptions.CompanyNotFoundException;
 import br.sena.gestao_vagas.modules.company.dto.CreateJobDTO;
 import br.sena.gestao_vagas.modules.company.entities.JobEntity;
 import br.sena.gestao_vagas.modules.company.useCases.CreateJobUseCase;
@@ -50,6 +51,8 @@ public class JobController {
 
       var result = this.createJobUseCase.execute(job);
       return ResponseEntity.ok().body(result);
+    } catch (CompanyNotFoundException e) {
+      return ResponseEntity.notFound().build();
     } catch (Exception e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     }
