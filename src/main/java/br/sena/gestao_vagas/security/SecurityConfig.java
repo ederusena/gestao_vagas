@@ -21,7 +21,7 @@ public class SecurityConfig {
     this.candidateFilter = candidateFilter;
   }
 
-  private static final String[] SWAGGER_WHITELIST = {
+  private static final String[] WHITELIST = {
       "/v2/api-docs",
       "/swagger-resources",
       "/swagger-resources/**",
@@ -30,7 +30,8 @@ public class SecurityConfig {
       "/swagger-ui.html",
       "/webjars/**",
       "/v3/api-docs/**",
-      "/swagger-ui/**"
+      "/swagger-ui/**",
+      "/actuator/**",
   };
 
   @Bean
@@ -41,7 +42,7 @@ public class SecurityConfig {
               .requestMatchers("/candidate/auth").permitAll()
               .requestMatchers("/company/").permitAll()
               .requestMatchers("/company/auth").permitAll()
-              .requestMatchers(SWAGGER_WHITELIST).permitAll();
+              .requestMatchers(WHITELIST).permitAll();
           auth.anyRequest().authenticated();
         })
         .addFilterBefore(candidateFilter, BasicAuthenticationFilter.class)
