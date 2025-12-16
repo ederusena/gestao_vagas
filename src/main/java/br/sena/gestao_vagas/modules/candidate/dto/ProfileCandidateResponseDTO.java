@@ -1,7 +1,5 @@
 package br.sena.gestao_vagas.modules.candidate.dto;
 
-import java.util.UUID;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

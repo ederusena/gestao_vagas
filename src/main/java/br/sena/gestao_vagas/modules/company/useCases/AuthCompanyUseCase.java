@@ -51,17 +51,17 @@ public class AuthCompanyUseCase {
     }
 
     // Se for igual -> autenticar gerar token JWT
-    var expires_in = Instant.now().plus(Duration.ofHours(4));
+    var expiresIn = Instant.now().plus(Duration.ofHours(4));
     Algorithm algorithm = Algorithm.HMAC256(secretKey);
     var token = JWT.create().withIssuer("javagas")
-      .withExpiresAt(expires_in)
+      .withExpiresAt(expiresIn)
       .withSubject(company.getId().toString())
       .withClaim("roles", Arrays.asList("COMPANY"))
       .sign(algorithm);
 
     var response = AuthCompanyResponseDTO.builder()
-        .access_token(token)
-        .expires_in(expires_in.toEpochMilli())
+        .accessToken(token)
+        .expiresIn(expiresIn.toEpochMilli())
         .build();
 
     return response;

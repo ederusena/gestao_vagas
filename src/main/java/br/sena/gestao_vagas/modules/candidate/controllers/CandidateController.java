@@ -1,6 +1,7 @@
 package br.sena.gestao_vagas.modules.candidate.controllers;
 
 import java.lang.reflect.Array;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -100,7 +101,7 @@ public class CandidateController {
     try {
       return this.allJobsByFilterUseCase.execute(filter);
     } catch (Exception e) {
-      return null;
+      return Collections.emptyList();
     }
 
   }

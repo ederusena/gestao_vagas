@@ -59,8 +59,8 @@ public class AuthCandidateUseCase {
         .sign(algorithm);
 
     var response = AuthResponseCandidateDTO.builder()
-        .access_token(token)
-        .expires_in(expiredIn.toEpochMilli())
+        .accessToken(token)
+        .expiresIn(expiredIn.toEpochMilli())
         .build();
 
     return response;
