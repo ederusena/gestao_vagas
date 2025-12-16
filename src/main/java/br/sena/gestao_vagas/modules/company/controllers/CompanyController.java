@@ -1,6 +1,7 @@
 package br.sena.gestao_vagas.modules.company.controllers;
 
 import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/company")
 @Tag(name = "Company Management System")
+@Slf4j
 public class CompanyController {
 
   private final CreateCompanyUseCase createCompanyUseCase;
@@ -40,7 +42,7 @@ public class CompanyController {
       var result = this.createCompanyUseCase.execute(company);
       return ResponseEntity.ok().body(result);
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("Error creating company: {}", e.getMessage(), e);
       return ResponseEntity.badRequest().body(e.getMessage());
     }
   }

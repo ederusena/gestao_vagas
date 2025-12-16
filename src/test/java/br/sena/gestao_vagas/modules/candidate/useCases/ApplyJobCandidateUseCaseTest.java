@@ -23,7 +23,7 @@ import br.sena.gestao_vagas.modules.company.entities.JobEntity;
 import br.sena.gestao_vagas.modules.company.repositories.JobRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class ApplyJobCandidateUseCaseTest {
+class ApplyJobCandidateUseCaseTest {
 
   @InjectMocks
   private ApplyJobCandidateUseCase applyJobCandidateUseCase;
@@ -39,7 +39,7 @@ public class ApplyJobCandidateUseCaseTest {
 
   @Test
   @DisplayName("Should not be able to apply job with candidate not found")
-  public void should_not_be_able_to_apply_job_with_candidate_not_found() {
+  void should_not_be_able_to_apply_job_with_candidate_not_found() {
     try {
       applyJobCandidateUseCase.execute(
           UUID.fromString("123e4567-e89b-12d3-a456-426614174000"),
@@ -51,7 +51,7 @@ public class ApplyJobCandidateUseCaseTest {
 
   @Test
   @DisplayName("Should not be able to apply job with job not found")
-  public void should_not_be_able_to_apply_job_with_job_not_found() {
+  void should_not_be_able_to_apply_job_with_job_not_found() {
     var candidateId = UUID.fromString("123e4567-e89b-12d3-a456-426614174002");
     var candidate = new CandidateEntity();
     candidate.setId(candidateId);
@@ -69,7 +69,7 @@ public class ApplyJobCandidateUseCaseTest {
 
   @Test
   @DisplayName("Should be able to apply job")
-  public void should_be_able_to_apply_job() {
+  void should_be_able_to_apply_job() {
     var candidateId = UUID.randomUUID();
     var jobId = UUID.randomUUID();
 
