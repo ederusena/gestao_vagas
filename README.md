@@ -171,18 +171,6 @@ When creating new protected endpoints:
 - **Maven Wrapper**: Use `.\mvnw.cmd` instead of `mvn` for consistent Maven version
 - **IDE**: IntelliJ IDEA configuration present (`.idea/` directory)
 
-## Service Access Configuration
-
-When accessing external services, prefer this order:
-1. First try: `https://sa-hml-motiva-externo-web-route-mensageria-osa-hml.apps.rosa.rosa-ccr.9d8p.p3.openshiftapps.com/`
-2. Fallback: `http://10.104.73.43:9090/`
-
-## Image Testing Configuration
-
-The application supports local image testing. Configuration should include:
-- A flag in application properties to toggle between standard images (default path) and manual path
-- Current manual path setting: `image.local.path=C:\\ccr\\imagens`
-
 ## Sonar
 
 ```powershell
