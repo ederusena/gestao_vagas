@@ -6,7 +6,6 @@ import java.util.Arrays;
 
 import javax.naming.AuthenticationException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,11 +26,13 @@ public class AuthCandidateUseCase {
   @Value("${security.token.secret.candidate}")
   private String secretKey;
 
-  @Autowired
-  private CandidateReposity repository;
+  private final CandidateReposity repository;
+  private final PasswordEncoder passwordEncoder;
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  public AuthCandidateUseCase(CandidateReposity repository, PasswordEncoder passwordEncoder) {
+    this.repository = repository;
+    this.passwordEncoder = passwordEncoder;
+  }
 
   public AuthResponseCandidateDTO execute(AuthRequestCandidateDTO authRequest) throws AuthenticationException {
     var candidate = repository

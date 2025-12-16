@@ -1,6 +1,5 @@
 package br.sena.gestao_vagas.modules.company.useCases;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.sena.gestao_vagas.exceptions.CompanyNotFoundException;
@@ -11,11 +10,13 @@ import br.sena.gestao_vagas.modules.company.repositories.JobRepository;
 @Service
 public class CreateJobUseCase {
 
-  @Autowired
-  private JobRepository repository;
+  private final JobRepository repository;
+  private final CompanyRepository companyRepository;
 
-  @Autowired
-  private CompanyRepository companyRepository;
+  public CreateJobUseCase(JobRepository repository, CompanyRepository companyRepository) {
+    this.repository = repository;
+    this.companyRepository = companyRepository;
+  }
 
   public JobEntity execute(JobEntity job) {
     var companyExists = this.companyRepository.findById(job.getCompanyId());

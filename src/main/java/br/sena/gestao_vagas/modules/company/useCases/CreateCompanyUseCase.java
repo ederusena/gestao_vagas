@@ -1,6 +1,5 @@
 package br.sena.gestao_vagas.modules.company.useCases;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +11,13 @@ import br.sena.gestao_vagas.modules.company.repositories.CompanyRepository;
 @Service
 public class CreateCompanyUseCase {
 
-  @Autowired
-  private CompanyRepository repository;
+  private final CompanyRepository repository;
+  private final PasswordEncoder passwordEncoder;
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  public CreateCompanyUseCase(CompanyRepository repository, PasswordEncoder passwordEncoder) {
+    this.repository = repository;
+    this.passwordEncoder = passwordEncoder;
+  }
 
   public CompanyEntity execute(CompanyEntity company) {
     this.repository

@@ -2,7 +2,6 @@ package br.sena.gestao_vagas.modules.candidate.useCases;
 
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.sena.gestao_vagas.exceptions.JobNotFoundException;
@@ -15,14 +14,17 @@ import br.sena.gestao_vagas.modules.company.repositories.JobRepository;
 @Service
 public class ApplyJobCandidateUseCase {
 
-  @Autowired
-  private CandidateReposity candidateRepository;
+  private final CandidateReposity candidateRepository;
+  private final JobRepository jobRepository;
+  private final ApplyJobRepository applyJobRepository;
 
-  @Autowired
-  private JobRepository jobRepository;
-
-  @Autowired
-  private ApplyJobRepository applyJobRepository;
+  public ApplyJobCandidateUseCase(CandidateReposity candidateRepository,
+                                   JobRepository jobRepository,
+                                   ApplyJobRepository applyJobRepository) {
+    this.candidateRepository = candidateRepository;
+    this.jobRepository = jobRepository;
+    this.applyJobRepository = applyJobRepository;
+  }
 
   public ApplyJobEntity execute(UUID candidateId, UUID jobId) {
     var candidate = this.candidateRepository.findById(candidateId)

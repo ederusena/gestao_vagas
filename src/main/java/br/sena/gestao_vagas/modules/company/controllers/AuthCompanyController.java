@@ -2,7 +2,6 @@ package br.sena.gestao_vagas.modules.company.controllers;
 
 import javax.naming.AuthenticationException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +25,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Authentication Company")
 public class AuthCompanyController {
 
-  @Autowired
-  private AuthCompanyUseCase authCompanyUseCase;
+  private final AuthCompanyUseCase authCompanyUseCase;
+
+  public AuthCompanyController(AuthCompanyUseCase authCompanyUseCase) {
+    this.authCompanyUseCase = authCompanyUseCase;
+  }
 
   @PostMapping("/auth")
   @Operation(summary = "Authenticate a Company and generate JWT token")

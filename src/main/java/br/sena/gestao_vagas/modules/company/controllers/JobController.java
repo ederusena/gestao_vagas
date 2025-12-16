@@ -2,7 +2,6 @@ package br.sena.gestao_vagas.modules.company.controllers;
 
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +27,11 @@ import jakarta.validation.Valid;
 @Tag(name = "Job Management System")
 public class JobController {
 
-  @Autowired
-  private CreateJobUseCase createJobUseCase;
+  private final CreateJobUseCase createJobUseCase;
+
+  public JobController(CreateJobUseCase createJobUseCase) {
+    this.createJobUseCase = createJobUseCase;
+  }
 
   @PostMapping("/job")
   @PreAuthorize("hasRole('COMPANY')")

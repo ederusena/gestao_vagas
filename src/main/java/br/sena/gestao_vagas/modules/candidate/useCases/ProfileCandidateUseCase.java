@@ -2,18 +2,20 @@ package br.sena.gestao_vagas.modules.candidate.useCases;
 
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import br.sena.gestao_vagas.exceptions.UserNotFoundException;
 import br.sena.gestao_vagas.modules.candidate.dto.ProfileCandidateResponseDTO;
 import br.sena.gestao_vagas.modules.candidate.repository.CandidateReposity;
 
 @Service
 public class ProfileCandidateUseCase {
   
-  @Autowired
-  private CandidateReposity repository;
+  private final CandidateReposity repository;
+
+  public ProfileCandidateUseCase(CandidateReposity repository) {
+    this.repository = repository;
+  }
   
   public ProfileCandidateResponseDTO execute(UUID id) {
 
@@ -23,7 +25,7 @@ public class ProfileCandidateUseCase {
     
     var candidate = this.repository.findById(id)
     .orElseThrow(() -> {
-      throw new UsernameNotFoundException("Candidate not found");
+      throw new UserNotFoundException();
     });
 
     var candidateDTO = ProfileCandidateResponseDTO.builder()

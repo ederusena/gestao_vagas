@@ -2,7 +2,6 @@ package br.sena.gestao_vagas.modules.candidate.controllers;
 
 import javax.naming.AuthenticationException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +25,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Authentication Candidate")
 public class AuthCandidateController {
   
-  @Autowired
-  private AuthCandidateUseCase authCandidateUseCase;
+  private final AuthCandidateUseCase authCandidateUseCase;
+
+  public AuthCandidateController(AuthCandidateUseCase authCandidateUseCase) {
+    this.authCandidateUseCase = authCandidateUseCase;
+  }
 
   @PostMapping("/auth")
   @Operation(summary = "Authenticate a Candidate and generate JWT token")

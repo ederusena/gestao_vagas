@@ -4,7 +4,6 @@ import java.lang.reflect.Array;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,17 +34,20 @@ import jakarta.validation.Valid;
 @Tag(name = "Candidate Management System")
 public class CandidateController {
 
-  @Autowired
-  private CreateCandidateUseCase createCandidateUseCase;
+  private final CreateCandidateUseCase createCandidateUseCase;
+  private final ProfileCandidateUseCase profileCandidateUseCase;
+  private final AllJobsByFilterUseCase allJobsByFilterUseCase;
+  private final ApplyJobCandidateUseCase applyJobCandidateUseCase;
 
-  @Autowired
-  private ProfileCandidateUseCase profileCandidateUseCase;
-
-  @Autowired
-  private AllJobsByFilterUseCase allJobsByFilterUseCase;
-
-  @Autowired
-  private ApplyJobCandidateUseCase applyJobCandidateUseCase;
+  public CandidateController(CreateCandidateUseCase createCandidateUseCase,
+                             ProfileCandidateUseCase profileCandidateUseCase,
+                             AllJobsByFilterUseCase allJobsByFilterUseCase,
+                             ApplyJobCandidateUseCase applyJobCandidateUseCase) {
+    this.createCandidateUseCase = createCandidateUseCase;
+    this.profileCandidateUseCase = profileCandidateUseCase;
+    this.allJobsByFilterUseCase = allJobsByFilterUseCase;
+    this.applyJobCandidateUseCase = applyJobCandidateUseCase;
+  }
 
   @PostMapping("/")
   @Operation(summary = "Create a new candidate")

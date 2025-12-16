@@ -1,6 +1,5 @@
 package br.sena.gestao_vagas.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -14,11 +13,13 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableMethodSecurity
 public class SecurityConfig {
 
-  @Autowired
-  private SecurityFilter filter;
+  private final SecurityCompanyFilter companyFilter;
+  private final SecurityCandidateFilter candidateFilter;
 
-  @Autowired
-  private SecurityCandidateFilter candidateFilter;
+  public SecurityConfig(SecurityCompanyFilter companyFilter, SecurityCandidateFilter candidateFilter) {
+    this.companyFilter = companyFilter;
+    this.candidateFilter = candidateFilter;
+  }
 
   private static final String[] SWAGGER_WHITELIST = {
       "/v2/api-docs",
@@ -44,7 +45,7 @@ public class SecurityConfig {
           auth.anyRequest().authenticated();
         })
         .addFilterBefore(candidateFilter, BasicAuthenticationFilter.class)
-        .addFilterBefore(filter, BasicAuthenticationFilter.class);
+        .addFilterBefore(companyFilter, BasicAuthenticationFilter.class);
     return http.build();
   }
 

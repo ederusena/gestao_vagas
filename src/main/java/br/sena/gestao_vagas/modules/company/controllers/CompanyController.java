@@ -1,6 +1,5 @@
 package br.sena.gestao_vagas.modules.company.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,8 +21,11 @@ import jakarta.validation.Valid;
 @Tag(name = "Company Management System")
 public class CompanyController {
 
-  @Autowired
-  private CreateCompanyUseCase createCompanyUseCase;
+  private final CreateCompanyUseCase createCompanyUseCase;
+
+  public CompanyController(CreateCompanyUseCase createCompanyUseCase) {
+    this.createCompanyUseCase = createCompanyUseCase;
+  }
 
   @PostMapping("/")
   @Operation(summary = "Create a new company")
