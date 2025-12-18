@@ -178,3 +178,9 @@ docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000
 
 mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar "-Dsonar.projectKey=gestao_vagas" "-Dsonar.projectName=gestao_vagas" "-Dsonar.host.url=http://localhost:9000" "-Dsonar.token=sqp_15bd005543db50509949c79b09a7b73a4293785b"
 ```
+
+## Prometheus Grafana
+
+```powershell
+docker-compose -f docker-compose-monitoring.yml up -d
+```
