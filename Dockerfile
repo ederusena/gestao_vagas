@@ -1,10 +1,10 @@
-FROM ubuntu:latest AS build
+FROM eclipse-temurin:17-jdk-alpine AS build
 
-RUN apt-get update && apt-get install -y maven openjdk-17-jdk
+RUN apk add --no-cache maven
 COPY . .
 RUN mvn clean install
 
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jre-alpine
 EXPOSE 8080
 COPY --from=build /target/gestao_vagas-0.0.1-SNAPSHOT.jar /app/gestao_vagas.jar
 WORKDIR /app
